@@ -30,3 +30,26 @@ debes llamar al procedimiento de este modo:
 
 CALL contarProductosPorEstado('disponible', @numero);
 SELECT @numero AS disponibles;
+
+Procedimiento almacenado con parámetros INOUT
+Vamos a crear un procedimiento que incremente una
+ variable llamada beneficio cuando se vende un producto. 
+ Para crear el procedimiento, ejecuta estas sentencias SQL:
+
+DELIMITER $$
+CREATE PROCEDURE venderProducto(
+    INOUT beneficio INT(255),
+    IN id_producto INT)
+BEGIN
+    SELECT @incremento_precio = precio 
+    FROM productos
+    WHERE id = id_producto;
+    SET beneficio = beneficio + @incremento_precio;
+END$$
+DELIMITER
+
+SET @beneficio = 0;
+CALL venderProducto(@beneficio, 1);
+CALL venderProducto(@beneficio, 2);
+CALL venderProducto(@beneficio, 2);
+SELECT @beneficio;
