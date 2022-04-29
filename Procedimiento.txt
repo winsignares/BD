@@ -1,0 +1,32 @@
+Procedimiento almacenado con parámetros IN
+Vamos a obtener los productos que tienen un determinado estado. 
+Para crear el procedimiento, ejecuta estas sentencias SQL:
+DELIMITER $$
+CREATE PROCEDURE obtenerProductosPorEstado(IN nombre_estado VARCHAR(255))
+BEGIN
+    SELECT * 
+    FROM productos
+    WHERE estado = nombre_estado;
+END$$
+DELIMITER
+
+
+Procedimiento almacenado con parámetros OUT
+Vamos a obtener el número de productos según su estado. Para crear el procedimiento, ejecuta estas sentencias SQL:
+
+DELIMITER $$
+CREATE PROCEDURE contarProductosPorEstado(
+    IN nombre_estado VARCHAR(25),
+    OUT numero INT)
+BEGIN
+    SELECT count (id) 
+    INTO numero
+    FROM productos
+    WHERE estado = nombre_estado;
+END$$
+DELIMITER
+
+debes llamar al procedimiento de este modo:
+
+CALL contarProductosPorEstado('disponible', @numero);
+SELECT @numero AS disponibles;
